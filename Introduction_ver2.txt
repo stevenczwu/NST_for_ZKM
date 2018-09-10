@@ -9,7 +9,7 @@ The original Gatys' algorithm need to do iterative optimizations to stylize one 
 
 
 
-Subsequent researches usually combined Gatys' algorithm with generative networks, with which a certain model may be pre-trained for one certain style image, thus content images may be stylized directly [6][7]. In our project, we adapted the codes from Justion Johnson to train various models as presented. It will take 3~4 hours to train one model on single GPU, but once the model is trained, it will take only ca. 80 millionsecond to stylize an image, which makes real-time video style transfer possible. Different versions of algorithms have been implemented in several popular applications including Prisma [8] and Ostagram [9]. Interested audience may also check deepart.io [10] to try with your own images. Have fun!
+Subsequent researches usually combined Gatys' algorithm with generative networks, with which a certain model may be pre-trained for one certain style image, thus content images may be stylized directly [6][7]. In our project, we adapted the codes from [6] to train various models as presented. It will take 3~4 hours to train one model on single GPU, but once the model is trained, it will take only ca. 80 millionsecond to stylize an image, which makes real-time video style transfer possible. Different versions of algorithms have been implemented in several popular applications including Prisma [8] and Ostagram [9]. Interested audience may also check deepart.io [10] to try with your own images. Have fun!
 
 
 References:
