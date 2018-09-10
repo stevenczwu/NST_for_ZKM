@@ -1,0 +1,36 @@
+﻿Neural Style Transfer is a deep learning-based algorithm which may achieve state-of-the-art performance on texture synthesis and image stylization tasks [1]. It was firstly proposed by Leon Gatys from University of Tübingen in Germany, and has been subsequently improved by lots of other computer scientists.
+
+ 
+
+
+The artificial neural networks, which are really prominent in the machine learning research area now, were originally inspired by neuroscience. Biological plausilbility may to some extend explain their good performance. An convolutional neural network (CNN) will try to understand an image in a way similar to human's visual system: artificial neurons will mimic the way how biological neurons process the bioelectrical signals, while convolution kernels will mimic the way of human receptive fields in our brains. This algorithm was firstly proposed for image classification tasks in 2012 [2], it set off an enormous surge around artificial intelligence using deep learning. Three years later, Leon Gatys found out that this algorithm may explain human texture perception with high-level features [3], thus adapted it for image stylization. 
+
+The original Gatys' algorithm need to do iterative optimizations to stylize one image [4][5]. The whole iteration process will take 1~3 minutes depends on the number of iterations on single GPU (GeForce GTX 980 Ti, same below). 
+
+
+
+Subsequent researches usually combined Gatys' algorithm with generative networks, with which a certain model may be pre-trained for one certain style image, thus content images may be stylized directly [6][7]. In our project, we adapted the codes from Justion Johnson to train various models as presented. It will take 3~4 hours to train one model on single GPU, but once the model is trained, it will take only ca. 80 millionsecond to stylize an image, which makes real-time video style transfer possible. Different versions of algorithms have been implemented in several popular applications including Prisma [8] and Ostagram [9]. Interested audience may also check deepart.io [10] to try with your own images. Have fun!
+
+
+References:
+
+[1] Y. Jing, Y. Yang, Z. Feng, J. Ye, Y. Yu and M. Song, "Neural Style Transfer: A Review," arXiv preprint arXiv:1705.04058, 2017.
+
+[2] A. Krizhevsky, I. Sutskever and G. E. Hinton, "ImageNet Classification with Deep Convolutional Neural Networks," in Advances in Neural Information Processing Systems, 2012.
+
+[3] L. A. Gatys, A. S. Ecker, and M. Bethge, “Texture synthesis using convolutional neural networks,” in Advances in Neural Information Processing Systems, 2015.
+
+[4] L. A. Gatys, A. S. Ecker, and M. Bethge, “A neural algorithm of artistic style,” ArXiv e-prints, Aug. 2015.
+
+[5] L. A. Gatys, A. S. Ecker, and M. Bethge, “Image style transfer using convolutional neural networks,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2016.
+
+[6] J. Johnson, A. Alahi, and L. Fei-Fei, “Perceptual losses for real-time style transfer and super-resolution,” in European Conference on Computer Vision, 2016.
+
+[7] D. Ulyanov, V. Lebedev, A. Vedaldi, and V. Lempitsky, “Texture networks: Feed-forward synthesis of textures and stylized images,” in International Conference on Machine Learning, 2016.
+
+[8] I. Prisma Labs, “Prisma: Turn memories into art using artificial intelligence,” 2016. [Online]. Available: http://prisma-ai.com 
+
+[9] “Ostagram,” 2016. [Online]. Available: http://ostagram.ru
+
+[10] “DeepArt,” 2016. [Online]. Available: https://deepart.io
+

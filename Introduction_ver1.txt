@@ -2,7 +2,11 @@
 
  
 
+
+
 Early image stylization algorithms were either based on procedural methods or patch-based methods, most of which could only capture low-level features of a certain style. In 2012, Geoff Hinton's work with deep neural networks set off an enormous surge around artificial intelligence using deep learning. Later, Leon Gatys found out that deep neural networks may explain human texture perception with high-level features, thus adapt the algorithm for image stylization. The original Gatys' algorithm will do iterative optimizations on the output image to reduce its both losses comparing with the input content image and style image through their high-level feature representations in the classical VGG network. The whole iteration process will take 1~3 minutes depends on the number of iterations on single GPU (GeForce GTX 980 Ti, same below). 
+
+
 
 
 
