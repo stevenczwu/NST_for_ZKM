@@ -13,13 +13,14 @@ require 'fast_neural_style.InstanceNormalization'
 local utils = require 'fast_neural_style.utils'
 local preprocess = require 'fast_neural_style.preprocess'
 
-
 local cmd = torch.CmdLine()
 
 -- Model options
-cmd:option('-models', 'models/instance_norm/candy.t7')
+cmd:option('-models', 'trained_models/phoenix.t7')
 cmd:option('-height', 1000) 
 cmd:option('-width', 1600)
+cmd:option('-style_images', 'style_images/phoenix.jpg')
+cmd:option('-show_style_images', 1)
 
 -- GPU options
 cmd:option('-gpu', -1)
@@ -29,7 +30,8 @@ cmd:option('-use_cudnn', 1)
 -- Webcam options
 cmd:option('-webcam_idx', 0)
 cmd:option('-webcam_fps', 60)
-
+cmd:option('-portrait_mode', 1)
+cmd:option('-mirror_mode', 0)
 
 local function main()
   local opt = cmd:parse(arg)
@@ -37,11 +39,18 @@ local function main()
   local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn == 1)
   local models = {}
   local styleimages = {}
-  local modelnames = { }
-  local stylenames = {"style_images/bricks.jpg", "style_images/chemie.jpg", "style_images/circuit.jpg", "style_images/citymap.jpg", "style_images/clips.jpg", "style_images/codes_green.jpg", "style_images/code1.jpg", "style_images/code1.jpg", "style_images/electricity.jpg", "style_images/feathers.jpg", "style_images/math.jpg", "style_images/matrix.jpg",  "style_images/mosaic.jpg", "style_images/mosaic2.jpg", "style_images/phoenix.jpg", "style_images/sketch.jpg", "style_images/sketch_bluelines.jpg", "style_images/swirl.jpg", "style_images/tree_branch.jpg", "style_images/trees.jpg", "style_images/vegetable.jpg", "style_images/water.jpg"}
-  local white = qt.QImage.fromTensor(image.load("white.png", 3))
+  local style_path = {}
   local preprocess_method = nil
   local i = 1
+
+  -- Load style images
+  for _, style_image_path in ipairs(opt.style_images:split(',')) do
+    table.insert(style_path, style_image_path)
+  end
+  -- construct a white image
+  local white = qt.QImage.fromTensor(torch.ones(3, 1, 1))
+
+  -- Load models
   for _, checkpoint_path in ipairs(opt.models:split(',')) do
     print('loading model from ', checkpoint_path)
     local checkpoint = torch.load(checkpoint_path)
@@ -53,7 +62,7 @@ local function main()
       cudnn.convert(model, cudnn)
     end
     table.insert(models, model)
-    local img = image.load(stylenames[i], 3)
+    local img = image.load(style_path[i], 3)
     i = i + 1
     table.insert(styleimages, img)
     local this_preprocess_method = checkpoint.opt.preprocessing or 'vgg'
@@ -70,6 +79,7 @@ local function main()
 
   local preprocess = preprocess[preprocess_method]
 
+  -- Initialize camera
   local camera_opt = {
     idx = opt.webcam_idx,
     fps = opt.webcam_fps,
@@ -80,41 +90,51 @@ local function main()
 
   local win = nil
   local idx = 1
-  local time = 5
+  local time = 8
   local init = os.time() 
   local model = models[idx]
   local style = styleimages[idx]
+
+  -- ==========================================
+  --                main loop
+  -- ========================================== 
   while true do
+    -- Change model after time seconds ********************
     local diff=os.difftime(os.time(),init)
     if diff > time then
-       idx = idx + 1
-       init = os.time()
-       --print(diff)
-       --print(idx)
-       if idx > table.getn(models) then
-          idx = 1   
-       end
-       model:clearState()
-       model = models[idx]
-       style = styleimages[idx]
+      idx = idx + 1
+      init = os.time()
+      if idx > table.getn(models) then
+         idx = 1   
+      end
+      model:clearState()
+      model = models[idx]
+      style = styleimages[idx]
     end
-    -- Grab a frame from the webcam
+
+    -- Grab a frame from the webcam ***********************
     local img = cam:forward()
+    -- rotate image to portrait mode 
+    if opt.portrait_mode == 1 then 
+        local img_rotated = img:transpose(2, 3)
+        img = img_rotated:contiguous()
+        img = image.vflip(img)
+    end
+    -- flip image to mirror mode
+    if opt.mirror_mode == 1 then
+        img = image.hflip(img)
+    end
     -- Preprocess the frame
     local H, W = img:size(2), img:size(3)
     img = img:view(1, 3, H, W)
     local img_pre = preprocess.preprocess(img):type(dtype)
 
-    -- Run the models
-    local imgs_out = {}
-    --for i, model in ipairs(models) do
-    
+    -- Run the models *************************************
+    local imgs_out = {}   
     local img_out_pre = model:forward(img_pre)
-
-      -- Deprocess the frame and show the image
+    -- Deprocess the frame
     local img_out = preprocess.deprocess(img_out_pre)[1]:float()
     table.insert(imgs_out, img_out)
-    --end
     local img_disp = image.toDisplayTensor{
       input = imgs_out,
       min = 0,
@@ -122,13 +142,11 @@ local function main()
       nrow = math.floor(math.sqrt(#imgs_out)),
     }
 	
-
+    -- Display result image *******************************
     if not win then
       -- On the first call use image.display to construct a window
-	--local w=qtwidget.newwindow(400,300,"Some QWidget")
-      win = image.display(img_disp)--,1,0,1,"test",w)
+      win = image.display(img_disp)
       win.window:showFullScreen()
-      
     else
       -- Reuse the same window
       win.image = img_out
@@ -136,10 +154,14 @@ local function main()
       local qt_img = qt.QImage.fromTensor(img_disp)
       local qt_img_style = qt.QImage.fromTensor(style)
       win.painter:image(0, 0, size.width, size.height, qt_img)
-      local stylew = size.width / 4
-      local styleh = size.height / 4 
-      win.painter:image(size.width - stylew - 15  , size.height - styleh - 15, stylew+10, styleh+10, white)
-      win.painter:image(size.width - stylew - 10  , size.height - styleh - 10, stylew, styleh, qt_img_style)
+
+      -- Show style images or not
+      if opt.show_style_images == 1 then
+        local stylew = size.width / 4
+        local styleh = size.height / 10
+        win.painter:image(size.width - stylew - 25  , size.height - styleh - 25, stylew+10, styleh+10, white)
+        win.painter:image(size.width - stylew - 20  , size.height - styleh - 20, stylew, styleh, qt_img_style)
+      end
     end
   end
 end
