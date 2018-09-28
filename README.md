@@ -10,7 +10,7 @@ In case of preferring to run the project manually, remove 'zkm project' in the '
 cd ~/zkm
 bash zkm.sh
 ```
-(Reboot may be needed before running the commands.)
+( Reboot may be needed before running the commands. )
 
 
 ### Setup
@@ -68,7 +68,7 @@ accept/decline/quit: accept
 
 Install NVIDIA Accelerated Graphics Driver for Linux-x86_64 361.62?
 
-(y)es/(n)o/(q)uit: n           <------
+(y)es/(n)o/(q)uit: n
 
 Install the CUDA 8.0 Toolkit?
 
@@ -94,6 +94,7 @@ luarocks install cunn
 4) Install cuDNN
 
 First [download cuDNN](https://developer.nvidia.com/cudnn), recommended version: 5.0
+
 Copy the following files into the CUDA Toolkit directory, and change the file permissions:
 ```bash
 sudo cp cuda/include/cudnn.h /usr/local/cuda/include
@@ -113,7 +114,7 @@ luarocks install cudnn
 ```
 
 ### Change the models
-I have prepared about 20 trained models for you. You may select whichever you would like to use by rewrite file ~/zkm/zkm.sh. 
+I have prepared about 20 trained models for you. You may select whichever you would like to use by editing file ~/zkm/zkm.sh. Models may be added/removed after '-models', style images may be added/removed after '-style_images'.
 
 Remember always give the corresponding style images. The number of models and style images must match, otherwise errors may occured.
 
