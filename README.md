@@ -38,7 +38,8 @@ luarocks install cudnn
 ```
 
 
-
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH
+source ~/.bashrc
 
 ## Webcam demo
 You can use the script `webcam_demo.lua` to run one or more models in real-time
