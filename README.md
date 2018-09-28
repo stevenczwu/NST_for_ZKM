@@ -10,12 +10,13 @@ In case of preferring to run the project manually, remove 'zkm project' in the '
 cd ~/zkm
 bash zkm.sh
 ```
-(Reboot may be needed before that.)
+(Reboot may be needed before running the commands.)
 
 
 ### Setup
+With a new computer installed with linux system Ubantu 16.04 and GTX 1080, you may set the computer up for the project by doing following steps:
 
-1) Install Nvidia Driver for GTX1080
+1) Install Nvidia Driver for GTX 1080
 
 One possible method:
 ```bash
@@ -27,7 +28,7 @@ sudo apt-get install freeglut3-dev
 ```
 Reboot to make it take effect.
 
-2) Install [Torch](http://torch.ch/).
+2) Install [Torch](http://torch.ch/)
 
 First [install Torch](http://torch.ch/docs/getting-started.html#installing-torch), then
 update / install the following packages:
@@ -48,25 +49,29 @@ cd to your Torch folder, update Torch by running:
 ```bash
 sudo bash update.sh
 ```
-(Without this update, Torch may met some problem with models trained with instance normalization.)
+( Without this update, Torch may met some problem with models trained with instance normalization. )
 
 3) Install CUDA
 
 First [install CUDA](https://developer.nvidia.com/cuda-downloads), recommended version: cuda 8.0
 
 !!!IMPORTANT!!!
+
 When installing cuda, DO NOT install new graphics driver like this:
 
 '''
 ......
 
 Do you accept the previously read EULA?
+
 accept/decline/quit: accept
 
 Install NVIDIA Accelerated Graphics Driver for Linux-x86_64 361.62?
-(y)es/(n)o/(q)uit: n
+
+(y)es/(n)o/(q)uit: n           <------
 
 Install the CUDA 8.0 Toolkit?
+
 (y)es/(n)o/(q)uit: y
 
 ......
@@ -108,25 +113,13 @@ luarocks install cudnn
 ```
 
 ### Change the models
-You can use the script `webcam_demo.lua` to run one or more models in real-time
-off a webcam stream. To run this demo you need to use `qlua` instead of `th`:
+I have prepared about 20 trained models for you. You may select whichever you would like to use by rewrite file ~/zkm/zkm.sh. 
 
+Remember always give the corresponding style images. The number of models and style images must match, otherwise errors may occured.
+
+Or you can run it with the default setting like:
 ```bash
-qlua webcam_demo.lua -models models/instance_norm/candy.t7 -gpu 0
+cd ~/zkm
+qlua zkm.lua
 ```
-
-You can run multiple models at the same time by passing a comma-separated list
-to the `-models` flag:
-
-```bash
-qlua webcam_demo.lua \
-  -models models/instance_norm/candy.t7,models/instance_norm/udnie.t7 \
-  -gpu 0
-```
-The webcam demo depends on a few extra Lua packages:
-- [clementfarabet/lua---camera](https://github.com/clementfarabet/lua---camera)
-- [torch/qtlua](https://github.com/torch/qtlua)
-
-You can install / update these packages by running:
-
 
