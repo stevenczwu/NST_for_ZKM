@@ -113,12 +113,21 @@ Then install the Torch bindings for cuDNN:
 luarocks install cudnn
 ```
 
+5) Clone the git and run
+
+```bash
+https://github.com/stevenczwu/NST_for_ZKM.git
+rm NST_for_ZKM zkm
+cd zkm
+bash zkm.sh
+```
+
 ### Change the models
 I have prepared about 20 trained models for you. You may select whichever you would like to use by editing file ~/zkm/zkm.sh. Models may be added/removed after '-models', style images may be added/removed after '-style_images'.
 
 Remember always give the corresponding style images. The number of models and style images must match, otherwise errors may occured.
 
-Or you can run it with the default setting like:
+Or you can run it with the default settings (3 models loaded) like:
 ```bash
 cd ~/zkm
 qlua zkm.lua
