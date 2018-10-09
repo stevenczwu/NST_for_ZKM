@@ -104,10 +104,10 @@ sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
 
 Add environment variables:
 ```bash
-vim ~/.profile
+vim ~/.source
 #add lines at the bottom of the file:
-    export LD_LIBRARY_PATH=/usr/local/cuda/lib64
-source ~/.profile
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+source ~/.source
 ```
 
 Then install the Torch bindings for cuDNN:
