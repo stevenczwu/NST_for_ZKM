@@ -80,8 +80,10 @@ Install the CUDA 8.0 Toolkit?
 
 Add environment variables:
 ```bash
-export PATH=$PATH:/usr/local/cuda/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+vim ~/.bashrc
+#add lines at the bottom of the file:
+    export PATH=$PATH:/usr/local/cuda/bin
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 source ~/.bashrc
 ```
 
@@ -102,13 +104,7 @@ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
 sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
 ```
 
-Add environment variables:
-```bash
-vim ~/.bashrc
-#add lines at the bottom of the file:
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
-source ~/.bashrc
-```
+Environment variables have been added in cuda's installation step, no new PATH need to be added.
 
 Then install the Torch bindings for cuDNN:
 ```bash
