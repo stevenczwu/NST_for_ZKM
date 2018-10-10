@@ -124,6 +124,8 @@ cd zkm
 bash zkm.sh
 ```
 
+Or if you want it to run automatically when the computer rebooted, change it into excutable in property-permissions of file zkm.sh, and add it to the startup applications as well.
+
 ### Change the models
 I have prepared about 20 trained models for you. You may select whichever you would like to use by editing file ~/zkm/zkm.sh. Models may be added/removed after '-models', style images may be added/removed after '-style_images'.
 
